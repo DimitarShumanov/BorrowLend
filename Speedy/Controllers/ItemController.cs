@@ -18,5 +18,68 @@ namespace Speedy.Controllers
             IEnumerable<BorrowLend> obj = _db.BorrowLend;
             return View(obj);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(BorrowLend item)
+        {
+            _db.BorrowLend.Add(item);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Update(int? id)
+        {
+            var obj = _db.BorrowLend.Find(id);
+            if(obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult Update(BorrowLend obj)
+        {
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.BorrowLend.Update(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            var obj = _db.BorrowLend.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult Delete(BorrowLend obj)
+        {
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.BorrowLend.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
