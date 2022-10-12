@@ -1,46 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Speedy.Data;
 using Speedy.Models;
+using Speedy.Models.ViewModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography.X509Certificates;
+
 
 namespace Speedy.Controllers
 {
-    public class ItemController : Controller
+    public class ExpenseController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public ItemController(ApplicationDbContext db)
+        public ExpenseController(ApplicationDbContext db)
         {
             _db = db;
         }
-
         public IActionResult Index()
         {
-            IEnumerable<BorrowLend> obj = _db.BorrowLend;
+            IEnumerable<Expense> obj = _db.Expense;
             return View(obj);
         }
 
         public IActionResult Create()
         {
-            return View();
+            ExpenseVM expenseVM = new ExpenseVM
+            {
+                Expense = new Expense(),
+                TypeDropDown = _db.ExpenseType.Select(i => new SelectListItem
+                {
+                    Text = i.ExpenseTypeName,
+                    Value = i.Id.ToString()
+                })
+            };
+            return View(expenseVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BorrowLend item)
+
+        public IActionResult Create(ExpenseVM expenseVM)
         {
             if(ModelState.IsValid)
             {
-                _db.BorrowLend.Add(item);
+                _db.Expense.Add(expenseVM.Expense);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(item);
+            return View(expenseVM);
         }
 
         public IActionResult Update(int? id)
         {
-            var obj = _db.BorrowLend.Find(id);
-            if(obj == null)
+            var obj = _db.Expense.Find(id);
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -51,24 +63,24 @@ namespace Speedy.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(BorrowLend obj)
+        public IActionResult Update(ExpenseVM expenseVM)
         {
-            if (obj == null)
+            if (expenseVM == null)
             {
                 return NotFound();
             }
             if(ModelState.IsValid)
             {
-                _db.BorrowLend.Update(obj);
+                _db.Expense.Update(expenseVM.Expense);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return View(expenseVM);
         }
 
         public IActionResult Delete(int? id)
         {
-            var obj = _db.BorrowLend.Find(id);
+            var obj = _db.Expense.Find(id);
             if (obj == null)
             {
                 return NotFound();
@@ -79,19 +91,20 @@ namespace Speedy.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Delete(BorrowLend obj)
+        public IActionResult Delete(ExpenseVM expenseVM)
         {
-            if (obj == null)
+            if (expenseVM == null)
             {
                 return NotFound();
             }
             if(ModelState.IsValid)
             {
-                _db.BorrowLend.Remove(obj);
+                _db.Expense.Remove(expenseVM.Expense);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return View(expenseVM);
         }
     }
 }
+

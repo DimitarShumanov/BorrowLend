@@ -9,6 +9,7 @@ namespace Speedy.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Item name")]
         public string ItemName { get; set; }
         [Required]
         public string Borrower { get; set; }

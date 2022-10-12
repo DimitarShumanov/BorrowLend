@@ -9,5 +9,7 @@ namespace Speedy.Data
 
         }
         public DbSet<BorrowLend> BorrowLend { get; set; }
-    }
+        public DbSet<Expense> Expense { get; set; }
+        public DbSet<ExpenseType> ExpenseType { get; set; }
+    } 
 }
