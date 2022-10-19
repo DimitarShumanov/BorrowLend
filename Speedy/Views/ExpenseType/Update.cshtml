@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model Speedy.Models.Expense
+@model Speedy.Models.ExpenseType
 @{
     ViewData["Title"] = "Update";
 }
@@ -10,14 +10,11 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group row">
-                <label class="col-3 m-1 form-control" asp-for="ExpenseName"></label>
-                <label class="col-3 m-1 form-control" asp-for="Amount"></label>
+                <label class="col-3 m-1 form-control" asp-for="ExpenseTypeName"></label>
             </div>
             <div class="form-group row">
-                <input class="col-3 form-control m-1" asp-for="ExpenseName" />
-                <span asp-validation-for="ExpenseName" class="text-danger"></span>
-                <input class="col-3 form-control m-1" asp-for="Amount" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
+                <input class="col-3 form-control m-1" asp-for="ExpenseTypeName" />
+                <span asp-validation-for="ExpenseTypeName" class="text-danger"></span>
             </div>
             <div class="form-group row">
                 <div class="col-3 form-control m-1"></div>
