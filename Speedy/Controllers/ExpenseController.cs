@@ -52,25 +52,26 @@ namespace Speedy.Controllers
             {
                 return NotFound();
             }
-            return View(obj);
+            ExpenseVM expenseVM = new ExpenseVM
+            {
+                Expense = obj,
+                TypeDropDown = _db.ExpenseType.Select(i => new SelectListItem
+                {
+                    Text = i.ExpenseTypeName,
+                    Value = i.Id.ToString()
+                })
+            };
+            return View(expenseVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Update(Expense obj)
+        public IActionResult Update(ExpenseVM obj)
         {
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                _db.Expense.Update(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(obj);
+            _db.Expense.Update(obj.Expense);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int? id)
@@ -80,7 +81,16 @@ namespace Speedy.Controllers
             {
                 return NotFound();
             }
-            return View(obj);
+            ExpenseVM expenseVM = new ExpenseVM
+            {
+                Expense = obj,
+                TypeDropDown = _db.ExpenseType.Select(i => new SelectListItem
+                {
+                    Text = i.ExpenseTypeName,
+                    Value = i.Id.ToString()
+                })
+            };
+            return View(expenseVM);
         }
 
         [HttpPost]
@@ -88,17 +98,9 @@ namespace Speedy.Controllers
 
         public IActionResult Delete(Expense obj)
         {
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            if(ModelState.IsValid)
-            {
-                _db.Expense.Remove(obj);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(obj);
+            _db.Expense.Remove(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
